@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-export default class App extends Component {
+import updateContent from '../actions/update_content';
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            content: 'App'
-        }
-    }
+class App extends Component {
 
     componentDidMount() {
-        this.setState({
-            content: 'New state of app'
-        });
+        this.props.updateContent('This message is being applied by the client once the app was served to the browser and React kicked in. Check the source code to see what\'s been rendered by the server side.');
     }
 
     render() {
         return (
             <div>
-                {this.state.content}
+                {this.props.content}
             </div>
         )
     }
+
 }
+
+function mapStateToProps({ content }) {
+    return {
+        content
+    }
+}
+
+export default connect(mapStateToProps, { updateContent })(App);

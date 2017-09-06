@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prebuild": "rimraf ./client/build",
+    "prebuild": "rimraf ./server/public/js",
     "build": "NODE_ENV=production webpack --config ./client/webpack.config.js -p",
     "dev": "NODE_ENV=development babel-node server/server",
     "start": "NODE_ENV=production babel-node server/server"

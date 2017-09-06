@@ -8,12 +8,17 @@ import webpackConfig from '../client/webpack.config';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
+import { Provider } from 'react-redux';
+import store from '../shared/src/reducers/store';
+
+import { StaticRouter } from 'react-router';
+
 import App from '../shared/src/components/app';
 
 const app = express();
 
 app.set('view engine', 'ejs');
-app.use(express.static('client/build'));
+app.use( express.static('server/public') );
 
 if (process.env.NODE_ENV !== 'production') {
     const compiler = webpack(webpackConfig);
@@ -38,7 +43,14 @@ if (process.env.NODE_ENV !== 'production') {
 
 
 app.get('*', (req, res) => {
-    const html = renderToString(<App />);
+    const context = {};
+    const html = renderToString(
+        <Provider store={store}>
+            <StaticRouter location={req.url} context={context}>
+                <App />
+            </StaticRouter>
+        </Provider>
+    );
     res.render('index', { html });
 });
 
